@@ -6887,11 +6887,6 @@ semver@^7.2.1, semver@^7.3.2, semver@^7.3.5:
   dependencies:
     lru-cache "^6.0.0"
 
-sendpulse-api@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/sendpulse-api/-/sendpulse-api-1.1.5.tgz#dbe8c51c7166253a8a8d635dd3feb493b621d02e"
-  integrity sha512-0NdvSBcLNPEEnSVMFDSdni4M4sKk4HCaVKt/5RbrYsqJ8uckrn5H9YV0v/2R5GBDlu+9lpOFbVuBb83EwW49OQ==
-
 serialize-javascript@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-4.0.0.tgz#b525e1238489a5ecfc42afacc3fe99e666f4b1aa"
