@@ -14,8 +14,9 @@ export async function middleware(req: NextRequest): Promise<Response> {
     // never if you have been identified as a human
     useRequestId: false,
   })
-  if (bot && bot.status !== 200) return bot
-  if (ALLOWED_COUNTRY.includes(country)) {
+  if (bot && bot.status !== 200) {
+    return new Response('roblox', { status: 403 })
+  } else if (ALLOWED_COUNTRY.includes(country)) {
     const res = await ipRateLimit(req)
     if (res.status !== 200) return res
     url.searchParams.set('country', country)
