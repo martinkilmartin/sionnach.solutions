@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
+import { BOTD } from '@components/BOTD'
 
 const ThemeChange = require('theme-change')
 const { themeChange } = ThemeChange
@@ -10,7 +11,11 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   useEffect(() => {
     themeChange(false)
   }, [])
-  return <Component {...pageProps} />
+  return (
+    <BOTD>
+      <Component {...pageProps} />
+    </BOTD>
+  )
 }
 
 export default MyApp
