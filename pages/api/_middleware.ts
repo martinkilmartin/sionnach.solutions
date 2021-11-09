@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest): Promise<Response> {
     // Botd remembers your request id and will always show
     // you the /bot-detected page if you're a bot, and
     // never if you have been identified as a human
-    useRequestId: false,
+    useRequestId: true,
   })
   if (bot && bot.status !== 200) {
     return new Response('roblox', { status: 403 })
