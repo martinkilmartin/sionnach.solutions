@@ -25,6 +25,8 @@ export async function middleware(req: NextRequest): Promise<Response> {
   } else if (BLOCKED_COUNTRY.includes(country)) {
     return new Response('Blocked for legal reasons', { status: 451 })
   } else {
-    return new Response('Limited audience', { status: 451 })
+    return new Response(`Limited audience ${country}, bot ${bot}`, {
+      status: 451,
+    })
   }
 }
