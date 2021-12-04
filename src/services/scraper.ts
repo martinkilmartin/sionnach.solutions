@@ -5,7 +5,7 @@ import { HeadlineExists, AddHeadline } from '@services/supabase'
 const { chromium } = require('playwright-core')
 
 export async function scrape(paper: NewsSource): Promise<boolean> {
-  console.error('paper: ' + paper)
+  console.error('paper: ' + JSON.stringify(paper))
   const browser = await chromium.launch({
     headless: true,
   })
