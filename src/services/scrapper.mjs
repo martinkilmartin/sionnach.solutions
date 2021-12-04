@@ -7,6 +7,7 @@ const PAPERS = [
     headlinePath: 'h5.card-title',
     sectionPath: 'p.label-small-category',
     linkPath: 'article.card a',
+    count: 0,
   },
   {
     id: 'IE_INDO',
@@ -14,6 +15,7 @@ const PAPERS = [
     headlinePath: '.title2',
     sectionPath: '.section1-main',
     linkPath: '.c-card1-textlink',
+    count: 0,
   },
   {
     id: 'IE_TIME',
@@ -21,6 +23,7 @@ const PAPERS = [
     headlinePath: 'span.h2',
     sectionPath: '',
     linkPath: '//a[@data-evt-category="Top spot element"]',
+    count: 0,
   },
   // {
   //   id: 'IE_TRSC',
@@ -45,17 +48,18 @@ async function main() {
   })
   console.error('🔰')
   console.error(HEADLINES)
+  PAPERS.forEach((paper) => console.error(`${paper.id}: ${paper.count}`))
 }
 
 async function scrape(paper) {
-  console.error(`🔪 ScRaPiNg  . . . ${Date.now()}`)
+  console.error(`🔪 ScRaPiNg  . . . ${Date.now().toString()}`)
   const browser = await playwright.chromium.launch({
     headless: true, // set this to true
   })
 
   const page = await browser.newPage()
 
-  await page.setDefaultNavigationTimeout(0);
+  await page.setDefaultNavigationTimeout(0)
 
   try {
     await page.goto(paper.url)
@@ -92,11 +96,19 @@ async function scrape(paper) {
   }
 
   if (headline.length) {
+    if (headline.startsWith('LATEST ')) {
+      headline = headline.substring(7)
+    } else if (headline.startsWith('EXCLUSIVE ')) {
+      headline = headline.substring(10)
+    }
     const hashedLine = hashCode(paper.id + headline)
     if (!HEADLINES[hashedLine]) {
-      console.error('✔ New headline found for ' + paper.id + '!')
+      paper.count++
+      console.error(
+        '✔ New headline found for ' + paper.id + '! Total: ' + paper.count
+      )
       HEADLINES[hashedLine] = {
-        time: Date.now(),
+        time: Date.now().toString(),
         source: paper.id,
         section: section,
         headline: headline,
@@ -112,8 +124,9 @@ async function scrape(paper) {
   await browser.close()
 }
 
+console.error(`start time: ${Date.now().toString()}`)
 main()
 
 setInterval(function () {
   main()
-}, 9988)
+}, 998877)
