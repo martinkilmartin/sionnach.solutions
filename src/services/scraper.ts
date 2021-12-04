@@ -23,41 +23,54 @@ export async function scrape(paper: NewsSource): Promise<boolean> {
   }
 
   let headline = ''
-  try {
-    headline = await page.$eval(
-      paper.headlinePath,
-      (headlineElm: HTMLElement) => headlineElm.innerText
-    )
-  } catch (err) {
-    console.error('❌ Headline not found for ' + paper.id + '!')
+  if (paper.headlinePath.length) {
+    try {
+      headline = await page.$eval(
+        paper.headlinePath,
+        (headlineElm: HTMLElement) => headlineElm.innerText
+      )
+    } catch (error) {
+      console.error('❌ Headline not found for ' + paper.id + '!')
+      console.error('❌ ERROR: ' + error)
+    }
   }
 
-  let section = 'news'
-  try {
-    section = await page.$eval(
-      paper.sectionPath,
-      (sectionElm: HTMLElement) => sectionElm.innerText
-    )
-  } catch (err) {
-    console.error('❌ Category not found for ' + paper.id + '!')
+  let section = 'NEWS'
+  if (paper.sectionPath.length) {
+    try {
+      section = await page.$eval(paper.sectionPath, (sectionElm: HTMLElement) =>
+        sectionElm.innerText.toUpperCase()
+      )
+    } catch (error) {
+      if (paper.id !== 'IE_TIME')
+        console.error('❌ Category not found for ' + paper.id + '!')
+      console.error('❌ ERROR: ' + error)
+    }
   }
 
   let link = ''
-  try {
-    link = await page.$eval(
-      paper.linkPath,
-      (urlElm: HTMLAnchorElement) => urlElm.href
-    )
-  } catch (err) {
-    console.error('❌ Link not found for ' + paper.id + '!')
+  if (paper.linkPath.length) {
+    try {
+      link = await page.$eval(
+        paper.linkPath,
+        (urlElm: HTMLAnchorElement) => urlElm.href
+      )
+    } catch (error) {
+      console.error('❌ Link not found for ' + paper.id + '!')
+      console.error('❌ ERROR: ' + error)
+    }
   }
 
   if (headline.length) {
-    const hashedLine = hashCode(paper.id + headline)
+    if (headline.startsWith('LATEST ')) {
+      headline = headline.substring(7)
+    } else if (headline.startsWith('EXCLUSIVE ')) {
+      headline = headline.substring(10)
+    }
+    const hashedLine = hashCode(paper.id + headline.replace(/\s/g, ''))
     console.error(`${hashedLine} ${headline} ` + paper.id + '!')
     const exists = await HeadlineExists(hashedLine)
     if (!exists) {
-      console.error('✔ New headline found for ' + paper.id + '!')
       await AddHeadline({
         id: hashedLine,
         source: paper.id,
@@ -65,11 +78,7 @@ export async function scrape(paper: NewsSource): Promise<boolean> {
         headline: headline,
         link: new URL(link),
       })
-    } else {
-      console.error('♻ No news is good news for ' + paper.id + '!')
     }
-  } else {
-    console.error('⭕ No headline found for ' + paper.id + '!')
   }
   await page.waitForTimeout(500)
   await browser.close()

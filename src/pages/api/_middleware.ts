@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest): Promise<Response> {
   const { geo } = req
   const country = geo.country || 'XX'
 
-  if (ALLOWED_COUNTRY.length === 0 || ALLOWED_COUNTRY.includes(country)) {
+  if (ALLOWED_COUNTRY.includes(country)) {
     const res = await ipRateLimit(req)
     if (res.status !== 200) return res
     return NextResponse.next()

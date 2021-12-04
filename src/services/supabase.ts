@@ -3,20 +3,17 @@ import { createClient } from '@supabase/supabase-js'
 import { Headline } from 'src/types'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || ''
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-export const AddHeadline = async (headline: Headline): Promise<void> => {
+export const AddHeadline = async (headline: Headline): Promise<boolean> => {
   const { data: hl, error } = await supabase
     .from('headlines')
     .insert(headline)
     .single()
-  if (error) {
-    console.error(error)
-  } else {
-    console.error(hl)
-  }
+  if (error) console.error(error)
+  return hl?.length ? true : false
 }
 
 export const HeadlineExists = async (
@@ -26,12 +23,6 @@ export const HeadlineExists = async (
     .from('headlines')
     .select('id')
     .eq('id', headlineHash)
-  if (hl?.length) {
-    console.error('supabase found headline hash')
-    return true
-  } else {
-    console.error('supabase did not find headline hash')
-    console.error(error)
-    return false
-  }
+  if (error) console.error(error)
+  return hl?.length ? true : false
 }
