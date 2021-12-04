@@ -5,8 +5,7 @@ import { HeadlineExists, AddHeadline } from '@services/supabase'
 const { chromium } = require('playwright-core')
 
 export async function scrape(paper: NewsSource): Promise<boolean> {
-  console.error('ici')
-
+  console.error('paper: ' + paper)
   const browser = await chromium.launch({
     headless: true,
   })
@@ -34,6 +33,7 @@ export async function scrape(paper: NewsSource): Promise<boolean> {
       console.error('❌ ERROR: ' + error)
     }
   }
+  console.error('headline: ' + headline)
 
   let section = 'NEWS'
   if (paper.sectionPath.length) {
@@ -48,6 +48,8 @@ export async function scrape(paper: NewsSource): Promise<boolean> {
     }
   }
 
+  console.error('section: ' + section)
+
   let link = ''
   if (paper.linkPath.length) {
     try {
@@ -61,6 +63,8 @@ export async function scrape(paper: NewsSource): Promise<boolean> {
     }
   }
 
+  console.error('link: ' + link)
+
   if (headline.length) {
     if (headline.startsWith('LATEST ')) {
       headline = headline.substring(7)
@@ -68,6 +72,7 @@ export async function scrape(paper: NewsSource): Promise<boolean> {
       headline = headline.substring(10)
     }
     const hashedLine = hashCode(paper.id + headline.replace(/\s/g, ''))
+    console.error('hashedLine: ' + hashedLine)
     console.error(`${hashedLine} ${headline} ` + paper.id + '!')
     const exists = await HeadlineExists(hashedLine)
     if (!exists) {
