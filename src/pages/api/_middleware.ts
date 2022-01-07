@@ -6,7 +6,7 @@ import { ipRateLimit } from '@lib/ip-rate-limit'
 
 export async function middleware(req: NextRequest): Promise<Response> {
   const { geo } = req
-  const country = geo.country || 'XX'
+  const country = geo?.country || 'XX'
 
   if (ALLOWED_COUNTRY.length === 0 || ALLOWED_COUNTRY.includes(country)) {
     const res = await ipRateLimit(req)
