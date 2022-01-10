@@ -1,6 +1,11 @@
+import { MainContent } from '@layouts/MainContent'
 import { useState, FormEvent } from 'react'
 
-import { CONTACT_SUCCESS, CONTACT_FAILURE } from '@constants/CONTENT'
+import {
+  CONTACT_TITLE,
+  CONTACT_SUCCESS,
+  CONTACT_FAILURE,
+} from '@constants/CONTENT'
 import { Alert } from '@components/Alert'
 import { TextArea, TextInput } from '@components/Form'
 import { Button } from '@components/Button'
@@ -46,30 +51,32 @@ const Contact = ({
     }
   }
   return (
-    <div className="justify-center max-w-full shadow-2xl card bg-base-100 hero-content">
-      {result && <Alert color="success" text={CONTACT_SUCCESS} />}
-      {error && <Alert color="error" text={CONTACT_FAILURE} />}
-      <div className="card-body">
-        <form onSubmit={formSubmit}>
-          <TextArea
-            title={messageTitle}
-            placeholder={messagePlaceholder}
-            name="message"
-            id="message"
-          />
-          <TextInput
-            title={contactTitle}
-            placeholder={contactPlaceholder}
-            type="email"
-            name="email"
-            id="email"
-          />
-          <div className="mt-6 form-control">
-            <Button text={buttonText} />
-          </div>
-        </form>
+    <MainContent title={CONTACT_TITLE}>
+      <div className="justify-center max-w-full shadow-2xl card bg-base-100 hero-content">
+        {result && <Alert color="success" text={CONTACT_SUCCESS} />}
+        {error && <Alert color="error" text={CONTACT_FAILURE} />}
+        <div className="card-body">
+          <form onSubmit={formSubmit}>
+            <TextArea
+              title={messageTitle}
+              placeholder={messagePlaceholder}
+              name="message"
+              id="message"
+            />
+            <TextInput
+              title={contactTitle}
+              placeholder={contactPlaceholder}
+              type="email"
+              name="email"
+              id="email"
+            />
+            <div className="mt-6 form-control">
+              <Button text={buttonText} />
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </MainContent>
   )
 }
 
