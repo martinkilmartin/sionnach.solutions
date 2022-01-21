@@ -13,6 +13,7 @@ export const CONTACT_EMAIL_SUBJECT = 'Sionnach Solutions Enquiry'
 export const CONTACT_SUCCESS = 'Message received! 🦊'
 export const CONTACT_FAILURE = "🤷 Error! It's us, not you! 🤦"
 export const COOKIE_TITLE = '🍪 Cookie Policy'
+export const GAME_TITLE = '🎮 🎲 🎰 🧩 🕹'
 export const PRIVACY_TITLE = '👀 Privacy Policy'
 export const TERMS_TITLE = '⚖ Terms Of Use'
 export const HTTP_403 = 'Woah there Betsy 🐄'
