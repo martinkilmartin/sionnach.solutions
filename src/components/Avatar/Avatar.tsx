@@ -45,12 +45,11 @@ const Avatar = ({
             alt="avavtar"
           />
         ) : (
-          <div
-            className="avatar no-image"
-            style={{ height: size, width: size }}
-          />
+          <div className="avatar" style={{ height: size, width: size }}>
+            🤠
+          </div>
         )}
-      </div>{' '}
+      </div>
     </div>
   )
 }

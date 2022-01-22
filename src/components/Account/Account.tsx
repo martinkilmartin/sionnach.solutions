@@ -120,50 +120,46 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
   return (
     session && (
       <div className="card card-bordered">
-        <div className="card-body">
-          <div>
-            <label htmlFor="avatar">
-              <h2 className="text-lg">Avatar image</h2>
+        <div className="card-body form-control">
+          <div className="input-group">
+            <label htmlFor="avatar" className="label">
+              <span className="label-text">Avatar</span>
             </label>
             <div className="avatarField">
-              {avatar ? (
-                <Avatar url={avatar} size={94} />
-              ) : (
-                <div className="avatarPlaceholder">?</div>
-              )}
+              <Avatar url={avatar} size={94} />
               <UploadButton onUpload={uploadAvatar} loading={uploading} />
             </div>
           </div>
-          <div>
+          <div className="input-group">
             <label htmlFor="email" className="label">
-              Email
+              <span className="label-text">Email</span>
             </label>
             <input
-              className="input"
+              className="input input-bordered"
               id="email"
               type="text"
               value={session.user?.email}
               disabled
             />
           </div>
-          <div>
+          <div className="input-group">
             <label htmlFor="username" className="label">
-              Name
+              <span className="label-text">Name</span>
             </label>
             <input
-              className="input"
+              className="input input-bordered"
               id="username"
               type="text"
               value={username || ''}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div>
+          <div className="input-group">
             <label htmlFor="website" className="label">
-              Website
+              <span className="label-text">Website</span>
             </label>
             <input
-              className="input"
+              className="input input-bordered"
               id="website"
               type="website"
               value={website || ''}
