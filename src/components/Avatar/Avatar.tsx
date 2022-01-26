@@ -29,25 +29,23 @@ const Avatar = ({
         setAvatarUrl(url)
       }
     } catch (error: any) {
-      console.error('Error downloading image: ', error.message)
+      console.error('Earráid ag íoslódáil an íomhá: ', error.message)
     }
   }
 
   return (
     <div className="avatar">
-      <div className="mb-8 rounded-btn w-24 h-24">
+      <div className="mb-8 w-24 h-24 mask mask-squircle">
         {avatarUrl ? (
           <Image
             src={avatarUrl}
             className="avatar"
             height={size}
             width={size}
-            alt="avavtar"
+            alt="Abhatár"
           />
         ) : (
-          <div className="avatar" style={{ height: size, width: size }}>
-            🤠
-          </div>
+          <div className="avatar text-6xl mt-4 ml-4">🤠</div>
         )}
       </div>
     </div>

@@ -50,13 +50,13 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
   }
 
   return (
-    <div className="w-full">
-      <h1 className="mb-12">Question List.</h1>
+    <div>
+      <h2 className="mb-2 text-center text-2xl">Ceisteanna</h2>
       <div className="flex gap-2 my-2">
         <input
           className="rounded w-full p-2"
           type="text"
-          placeholder="make coffee"
+          placeholder="Cé leis thú?"
           value={newQuestionText}
           onChange={(e) => {
             setError('')
@@ -64,13 +64,13 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
           }}
         />
         <button
-          className="btn-black"
+          className="btn btn-primary"
           onClick={() => addQuestion(newQuestionText)}
         >
-          Add
+          Cuir le
         </button>
       </div>
-      {!!errorText && <Alert text={errorText} />}
+      {errorText && <Alert text={errorText} />}
       <div className="shadow overflow-hidden rounded-md">
         <ul>
           {questions?.length &&
@@ -115,18 +115,18 @@ const Question = ({ question, onDelete }: QuestionProps) => {
       className="w-full block cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition duration-150 ease-in-out"
     >
       <div className="flex items-center px-4 py-4 sm:px-6">
-        <div className="min-w-0 flex-1 flex items-center">
-          <div className="text-sm leading-5 font-medium truncate">
-            {question.question}
-          </div>
-        </div>
         <div>
           <input
-            className="cursor-pointer"
+            className="cursor-pointer mr-2"
             onChange={(_e) => toggle()}
             type="checkbox"
             checked={isAnswered ? true : false}
           />
+        </div>
+        <div className="min-w-0 flex-1 flex items-center">
+          <div className="text-sm leading-5 font-medium truncate">
+            {question.question}
+          </div>
         </div>
         <button
           onClick={(e) => {
@@ -134,19 +134,9 @@ const Question = ({ question, onDelete }: QuestionProps) => {
             e.stopPropagation()
             onDelete()
           }}
-          className="w-4 h-4 ml-2 border-2 hover:border-black rounded"
+          className="ml-2"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="gray"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
+          ❌
         </button>
       </div>
     </li>

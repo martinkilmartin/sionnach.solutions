@@ -7,9 +7,9 @@ export type UploadButtonProps = {
 
 const UploadButton = (props: UploadButtonProps): JSX.Element => {
   return (
-    <div className="form-control">
-      <label className="btn primary" htmlFor="single">
-        {props.loading ? 'Uploading ...' : 'Upload'}
+    <div>
+      <label className="btn btn-primary" htmlFor="single">
+        {props.loading ? 'Ag Uaslódáil ...' : 'Uaslódáil'}
       </label>
       <input
         style={{

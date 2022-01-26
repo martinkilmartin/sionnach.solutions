@@ -11,4 +11,6 @@ export type Profile = {
   username: string
   website: string
   updated_at: string
+  cash_address: string
+  cash_balance: number
 }

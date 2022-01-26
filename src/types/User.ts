@@ -9,7 +9,8 @@ export type User = {
 }
 
 export type UserAccountType = {
-  username?: string
-  website?: string
   avatar_url?: string
+  username?: string
+  cash_address?: string
+  cash_balance?: number
 }

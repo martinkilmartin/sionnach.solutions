@@ -28,7 +28,7 @@ const HomePage = (): JSX.Element => {
             <Auth />
           </MainContent>
         ) : (
-          <MainContent title="Account">
+          <MainContent title="Cuntas">
             <Account key={session?.user?.id} session={session} />
           </MainContent>
         )}

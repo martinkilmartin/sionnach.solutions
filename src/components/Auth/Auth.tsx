@@ -23,11 +23,13 @@ const Auth = (): JSX.Element => {
       <div className="card-body">
         <h1 className="card-title">Spraoi</h1>
         <div className="form-control">
-          <p className="label">Sign in via magic link with your email below</p>
+          <p className="label">
+            Sínigh isteach trí nasc draíochta chuig do ríomhphost
+          </p>
           <input
             className="input"
             type="email"
-            placeholder="Your email"
+            placeholder="do@sheoladh.ríomhphost"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -41,7 +43,7 @@ const Auth = (): JSX.Element => {
             className="btn btn-primary"
             disabled={loading}
           >
-            <span>{loading ? 'Loading' : 'Send magic link'}</span>
+            <span>{loading ? 'Ag lódáil' : 'Seol nasc draíochta'}</span>
           </button>
         </div>
       </div>

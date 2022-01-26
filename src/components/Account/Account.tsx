@@ -12,7 +12,8 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
   const [uploading, setUploading] = useState<boolean>(false)
   const [avatar, setAvatar] = useState<string | null>(null)
   const [username, setUsername] = useState<string | null>(null)
-  const [website, setWebsite] = useState<string | null>(null)
+  const [cash_address, setCashAddress] = useState<string | null>(null)
+  const [cash_balance, setCashBalance] = useState<number | null>(null)
 
   useEffect(() => {
     getProfile()
@@ -20,7 +21,7 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
 
   async function signOut() {
     const { error } = await supabase.auth.signOut()
-    if (error) console.error('Error logging out:', error.message)
+    if (error) console.error('Earráid logáil amach:', error.message)
   }
 
   async function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
@@ -28,7 +29,7 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
       setUploading(true)
 
       if (!event.target.files || event.target.files.length == 0) {
-        throw 'You must select an image to upload.'
+        throw 'Caith tú íomhá a roghnú le huaslódáil.'
       }
 
       const user = supabase.auth.user()
@@ -66,7 +67,8 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
   function setProfile(profile: Profile) {
     setAvatar(profile.avatar_url)
     setUsername(profile.username)
-    setWebsite(profile.website)
+    setCashAddress(profile.cash_address)
+    setCashBalance(profile.cash_balance)
   }
 
   async function getProfile() {
@@ -76,7 +78,7 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select(`username, website, avatar_url`)
+        .select(`avatar_url, username, cash_address, cash_balance`)
         .eq('id', user?.id)
         .single()
 
@@ -100,7 +102,6 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
       const updates = {
         id: user?.id,
         username,
-        website,
         updated_at: new Date(),
       }
 
@@ -120,73 +121,83 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
 
   return (
     session && (
-      <div className="card card-bordered">
-        <div className="card-body form-control">
-          <div className="input-group">
-            <label htmlFor="avatar" className="label">
-              <span className="label-text">Avatar</span>
-            </label>
-            <div className="avatarField">
-              <Avatar url={avatar} size={94} />
+      <div>
+        <div className="flex flex-wrap">
+          <div className="card">
+            <div className="card-body">
+              <label htmlFor="avatar" className="input-group ">
+                <span>Abhatár</span>
+                <Avatar url={avatar} size={94} />
+              </label>
               <UploadButton onUpload={uploadAvatar} loading={uploading} />
             </div>
           </div>
-          <div className="input-group">
-            <label htmlFor="email" className="label">
-              <span className="label-text">Email</span>
-            </label>
-            <input
-              className="input input-bordered"
-              id="email"
-              type="text"
-              value={session.user?.email}
-              disabled
-            />
+          <div className="card">
+            <div className="card-body">
+              <label htmlFor="email" className="input-group">
+                <span className="label-text">Ríomhphost</span>
+                <input
+                  className="input input-bordered"
+                  id="email"
+                  type="text"
+                  value={session.user?.email}
+                  disabled
+                />
+              </label>
+              <label htmlFor="cash_address" className="input-group">
+                <span className="label-text">Seoladh 🪙</span>
+                <input
+                  className="input input-bordered"
+                  id="cash_address"
+                  type="text"
+                  value={cash_address ?? ''}
+                  disabled
+                />
+              </label>
+              <label htmlFor="cash_balance" className="input-group">
+                <span className="label-text">Iarmhéid 🪙</span>
+                <input
+                  className="input input-bordered"
+                  id="cash_balance"
+                  type="text"
+                  value={cash_balance ?? ''}
+                  disabled
+                />
+              </label>
+            </div>
           </div>
-          <div className="input-group">
-            <label htmlFor="username" className="label">
-              <span className="label-text">Name</span>
-            </label>
-            <input
-              className="input input-bordered"
-              id="username"
-              type="text"
-              value={username || ''}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="website" className="label">
-              <span className="label-text">Website</span>
-            </label>
-            <input
-              className="input input-bordered"
-              id="website"
-              type="website"
-              value={website || ''}
-              onChange={(e) => setWebsite(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <button
-              className="btn primary"
-              onClick={() => updateProfile()}
-              disabled={loading}
-            >
-              {loading ? 'Loading ...' : 'Update'}
-            </button>
-          </div>
-
-          <div>
-            <button className="btn secondary" onClick={() => signOut()}>
-              Sign Out
-            </button>
+          <div className="card">
+            <div className="card-body">
+              <label htmlFor="username" className="input-group">
+                <span className="label-text">Ainm</span>
+                <input
+                  className="input input-bordered"
+                  id="username"
+                  type="text"
+                  value={username || ''}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </label>
+              <div className="card-actions">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => updateProfile()}
+                  disabled={loading}
+                >
+                  {loading ? 'Ag lódáil ...' : 'Uasdátú'}
+                </button>
+                <button className="btn btn-secondary" onClick={() => signOut()}>
+                  Sínigh Amach
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="card-body">
-          {session.user && <Questions user={session.user} />}
-        </div>
+        {session.user && (
+          <div className="card-body">
+            <Questions user={session.user} />
+          </div>
+        )}
       </div>
     )
   )
