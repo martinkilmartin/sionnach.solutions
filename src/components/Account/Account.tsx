@@ -186,6 +186,12 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
                 >
                   {loading ? 'Ag lódáil ...' : 'Uasdátú'}
                 </button>
+              </div>
+            </div>
+          </div>
+          <div className="card">
+            <div className="card-body">
+              <div className="card-actions">
                 <button className="btn btn-secondary" onClick={() => signOut()}>
                   Sínigh Amach
                 </button>
