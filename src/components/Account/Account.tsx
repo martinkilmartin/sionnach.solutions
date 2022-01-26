@@ -4,6 +4,7 @@ import { AuthSession } from '@supabase/supabase-js'
 import { Profile } from '../../types/Supabase'
 import { Avatar } from '@components/Avatar'
 import { UploadButton } from '@components/Button'
+import { Questions } from '@components/Questions'
 import { DEFAULT_AVATARS_BUCKET } from '@constants/SUPABASE'
 
 const Account = ({ session }: { session: AuthSession }): JSX.Element => {
@@ -182,6 +183,9 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
               Sign Out
             </button>
           </div>
+        </div>
+        <div className="card-body">
+          {session.user && <Questions user={session.user} />}
         </div>
       </div>
     )
