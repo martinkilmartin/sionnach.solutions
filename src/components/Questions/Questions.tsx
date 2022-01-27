@@ -39,11 +39,19 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
         .insert({ question, answer, clue, user_id: user.id })
         .single()
       if (error) setError(error.message)
-      else if (Array.isArray(questions))
+      else if (Array.isArray(questions)) {
         setQuestions([...questions, questionBack])
+        clear()
+      }
     } else {
       setError(question.length ? 'Freagra ag teastáil' : 'Ceist ag teastáil')
     }
+  }
+
+  const clear = () => {
+    setNewQuestionText('')
+    setNewAnswerText('')
+    setNewClueText('')
   }
 
   const deleteQuestion = async (id: number) => {
