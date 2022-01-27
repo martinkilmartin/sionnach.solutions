@@ -3,7 +3,7 @@ export type Question = {
   user_id: string
   question: string
   answer: string
-  clues?: string
+  clue?: string
   is_answered: boolean
   inserted_at: number
 }

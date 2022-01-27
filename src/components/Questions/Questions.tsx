@@ -32,7 +32,8 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
     const question = q.trim()
     const answer = a.trim()
     const clue = c.trim()
-    if (question.length) {
+    if (question.length && answer.length) {
+      setError('')
       const { data: questionBack, error } = await supabase
         .from('questions')
         .insert({ question, answer, clue, user_id: user.id })
@@ -40,6 +41,8 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
       if (error) setError(error.message)
       else if (Array.isArray(questions))
         setQuestions([...questions, questionBack])
+    } else {
+      setError(question.length ? 'Freagra ag teastáil' : 'Ceist ag teastáil')
     }
   }
 
@@ -144,13 +147,7 @@ const Question = ({ question, onDelete }: QuestionProps) => {
   }
 
   return (
-    <li
-      onClick={(e) => {
-        e.preventDefault()
-        toggle()
-      }}
-      className="w-full block cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition duration-150 ease-in-out"
-    >
+    <li className="w-full block cursor-pointer hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition duration-150 ease-in-out">
       <div className="flex items-center px-4 py-4 sm:px-6">
         <div>
           <input
@@ -162,7 +159,10 @@ const Question = ({ question, onDelete }: QuestionProps) => {
         </div>
         <div className="min-w-0 flex-1 flex items-center">
           <div className="text-sm leading-5 font-medium truncate">
-            {question.question}
+            <details>
+              <summary>{question.question}</summary>
+              {question.answer}
+            </details>
           </div>
         </div>
         <button
