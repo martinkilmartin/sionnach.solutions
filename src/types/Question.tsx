@@ -4,6 +4,7 @@ export type Question = {
   question: string
   answer: string
   clue?: string
+  tag?: string
   is_answered: boolean
   inserted_at: number
 }

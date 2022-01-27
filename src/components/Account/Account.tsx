@@ -12,7 +12,6 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
   const [uploading, setUploading] = useState<boolean>(false)
   const [avatar, setAvatar] = useState<string | null>(null)
   const [username, setUsername] = useState<string | null>(null)
-  const [cash_address, setCashAddress] = useState<string | null>(null)
   const [cash_balance, setCashBalance] = useState<number | null>(null)
 
   useEffect(() => {
@@ -67,7 +66,6 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
   function setProfile(profile: Profile) {
     setAvatar(profile.avatar_url)
     setUsername(profile.username)
-    setCashAddress(profile.cash_address)
     setCashBalance(profile.cash_balance)
   }
 
@@ -125,11 +123,11 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
         <div className="flex flex-wrap">
           <div className="card">
             <div className="card-body">
-              <label htmlFor="avatar" className="input-group ">
-                <span>Abhatár</span>
-                <Avatar url={avatar} size={94} />
-              </label>
-              <UploadButton onUpload={uploadAvatar} loading={uploading} />
+              <div className="card-actions">
+                <button className="btn btn-secondary" onClick={() => signOut()}>
+                  Sínigh Amach
+                </button>
+              </div>
             </div>
           </div>
           <div className="card">
@@ -141,16 +139,6 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
                   id="email"
                   type="text"
                   value={session.user?.email}
-                  disabled
-                />
-              </label>
-              <label htmlFor="cash_address" className="input-group">
-                <span className="label-text">Seoladh 🪙</span>
-                <input
-                  className="input input-bordered"
-                  id="cash_address"
-                  type="text"
-                  value={cash_address ?? ''}
                   disabled
                 />
               </label>
@@ -191,11 +179,11 @@ const Account = ({ session }: { session: AuthSession }): JSX.Element => {
           </div>
           <div className="card">
             <div className="card-body">
-              <div className="card-actions">
-                <button className="btn btn-secondary" onClick={() => signOut()}>
-                  Sínigh Amach
-                </button>
-              </div>
+              <label htmlFor="avatar" className="input-group ">
+                <span>Abhatár</span>
+                <Avatar url={avatar} size={94} />
+              </label>
+              <UploadButton onUpload={uploadAvatar} loading={uploading} />
             </div>
           </div>
         </div>

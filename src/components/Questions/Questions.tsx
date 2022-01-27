@@ -11,9 +11,10 @@ type QuestionProps = {
 }
 const Questions = ({ user }: QuestionsProps): JSX.Element => {
   const [questions, setQuestions] = useState<QuestionType[] | null>(null)
-  const [newQuestionText, setNewQuestionText] = useState('')
-  const [newAnswerText, setNewAnswerText] = useState('')
-  const [newClueText, setNewClueText] = useState('')
+  const [newQuestion, setNewQuestion] = useState('')
+  const [newAnswer, setNewAnswer] = useState('')
+  const [newClue, setNewClue] = useState('')
+  const [tag, setTag] = useState('')
   const [errorText, setError] = useState('')
 
   useEffect(() => {
@@ -28,15 +29,17 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
     if (error) console.error('error', error)
     else setQuestions(questions)
   }
-  const addQuestion = async (q: string, a: string, c: string) => {
+
+  const addQuestion = async (q: string, a: string, c: string, t: string) => {
     const question = q.trim()
     const answer = a.trim()
     const clue = c.trim()
+    const tag = t.trim()
     if (question.length && answer.length) {
       setError('')
       const { data: questionBack, error } = await supabase
         .from('questions')
-        .insert({ question, answer, clue, user_id: user.id })
+        .insert({ question, answer, clue, tag, user_id: user.id })
         .single()
       if (error) setError(error.message)
       else if (Array.isArray(questions)) {
@@ -49,9 +52,10 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
   }
 
   const clear = () => {
-    setNewQuestionText('')
-    setNewAnswerText('')
-    setNewClueText('')
+    setNewQuestion('')
+    setNewAnswer('')
+    setNewClue('')
+    setTag('')
   }
 
   const deleteQuestion = async (id: number) => {
@@ -74,9 +78,9 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
               className="rounded w-full p-2 input input-bordered"
               type="text"
               placeholder="Cé leis thú?"
-              value={newQuestionText}
+              value={newQuestion}
               onChange={(e) => {
-                setNewQuestionText(e.target.value)
+                setNewQuestion(e.target.value)
               }}
             />
           </label>
@@ -88,32 +92,44 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
               className="rounded w-full p-2 input input-bordered"
               type="text"
               placeholder="Liom fhéin."
-              value={newAnswerText}
+              value={newAnswer}
               onChange={(e) => {
-                setNewAnswerText(e.target.value)
+                setNewAnswer(e.target.value)
               }}
             />
           </label>
         </div>
         <div className="form-control w-full">
           <label className="input-group">
-            <span>Leid</span>
+            <span>Cliú</span>
             <input
               className="rounded w-full p-2 input input-bordered"
               type="text"
               placeholder="42"
-              value={newClueText}
+              value={newClue}
               onChange={(e) => {
-                setNewClueText(e.target.value)
+                setNewClue(e.target.value)
+              }}
+            />
+          </label>
+        </div>
+        <div className="form-control w-full">
+          <label className="input-group">
+            <span>Clib</span>
+            <input
+              className="rounded p-2 w-full input input-bordered"
+              type="text"
+              placeholder="#"
+              value={tag}
+              onChange={(e) => {
+                setTag(e.target.value)
               }}
             />
           </label>
         </div>
         <button
           className="btn btn-primary"
-          onClick={() =>
-            addQuestion(newQuestionText, newAnswerText, newClueText)
-          }
+          onClick={() => addQuestion(newQuestion, newAnswer, newClue, tag)}
         >
           Cuir le
         </button>
@@ -166,6 +182,9 @@ const Question = ({ question, onDelete }: QuestionProps) => {
           />
         </div>
         <div className="min-w-0 flex-1 flex items-center">
+          {question?.tag?.length && (
+            <div className="badge badge-info mr-2">{question.tag}</div>
+          )}
           <div className="text-sm leading-5 font-medium truncate">
             <details>
               <summary>{question.question}</summary>
