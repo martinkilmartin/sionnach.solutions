@@ -12,6 +12,8 @@ type QuestionProps = {
 const Questions = ({ user }: QuestionsProps): JSX.Element => {
   const [questions, setQuestions] = useState<QuestionType[] | null>(null)
   const [newQuestionText, setNewQuestionText] = useState('')
+  const [newAnswerText, setNewAnswerText] = useState('')
+  const [newClueText, setNewClueText] = useState('')
   const [errorText, setError] = useState('')
 
   useEffect(() => {
@@ -26,13 +28,14 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
     if (error) console.error('error', error)
     else setQuestions(questions)
   }
-  const addQuestion = async (questionText: string) => {
-    const question = questionText.trim()
-    const answer = 'static answer'
+  const addQuestion = async (q: string, a: string, c: string) => {
+    const question = q.trim()
+    const answer = a.trim()
+    const clue = c.trim()
     if (question.length) {
       const { data: questionBack, error } = await supabase
         .from('questions')
-        .insert({ question, answer, user_id: user.id })
+        .insert({ question, answer, clue, user_id: user.id })
         .single()
       if (error) setError(error.message)
       else if (Array.isArray(questions))
@@ -52,20 +55,54 @@ const Questions = ({ user }: QuestionsProps): JSX.Element => {
   return (
     <div>
       <h2 className="mb-2 text-center text-2xl">Ceisteanna</h2>
-      <div className="flex gap-2 my-2">
-        <input
-          className="rounded w-full p-2"
-          type="text"
-          placeholder="Cé leis thú?"
-          value={newQuestionText}
-          onChange={(e) => {
-            setError('')
-            setNewQuestionText(e.target.value)
-          }}
-        />
+      <div className="flex flex-wrap gap-2 my-2">
+        <div className="form-control w-full">
+          <label className="input-group">
+            <span>Ceist</span>
+            <input
+              className="rounded w-full p-2 input input-bordered"
+              type="text"
+              placeholder="Cé leis thú?"
+              value={newQuestionText}
+              onChange={(e) => {
+                setNewQuestionText(e.target.value)
+              }}
+            />
+          </label>
+        </div>
+        <div className="form-control w-full">
+          <label className="input-group">
+            <span>Freagra</span>
+            <input
+              className="rounded w-full p-2 input input-bordered"
+              type="text"
+              placeholder="Liom fhéin."
+              value={newAnswerText}
+              onChange={(e) => {
+                setNewAnswerText(e.target.value)
+              }}
+            />
+          </label>
+        </div>
+        <div className="form-control w-full">
+          <label className="input-group">
+            <span>Leid</span>
+            <input
+              className="rounded w-full p-2 input input-bordered"
+              type="text"
+              placeholder="42"
+              value={newClueText}
+              onChange={(e) => {
+                setNewClueText(e.target.value)
+              }}
+            />
+          </label>
+        </div>
         <button
           className="btn btn-primary"
-          onClick={() => addQuestion(newQuestionText)}
+          onClick={() =>
+            addQuestion(newQuestionText, newAnswerText, newClueText)
+          }
         >
           Cuir le
         </button>
