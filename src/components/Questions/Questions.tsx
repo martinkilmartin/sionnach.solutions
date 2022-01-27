@@ -151,7 +151,7 @@ const Question = ({ question, onDelete }: QuestionProps) => {
       <div className="flex items-center px-4 py-4 sm:px-6">
         <div>
           <input
-            className="cursor-pointer mr-2"
+            className="cursor-pointer mr-4"
             onChange={(_e) => toggle()}
             type="checkbox"
             checked={isAnswered ? true : false}
